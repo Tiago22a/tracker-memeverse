@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-950 flex items-center justify-center min-h-screen text-white">
+
+  <div class="bg-gray-800 p-6 rounded-xl w-full max-w-sm shadow-lg">
+    <h1 class="text-2xl font-bold mb-4 text-center">Login Admin</h1>
+    <form id="loginForm">
+      <input type="text" id="username" placeholder="Usuário" required class="w-full p-2 mb-4 bg-gray-700 rounded" />
+      <input type="password" id="password" placeholder="Senha" required class="w-full p-2 mb-4 bg-gray-700 rounded" />
+      <button type="submit" class="bg-blue-600 hover:bg-blue-700 w-full py-2 rounded-xl">Entrar</button>
+    </form>
+    <p id="error" class="mt-2 text-red-500 text-sm hidden">Usuário ou senha incorretos</p>
+  </div>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value;
+
+      if (username === "admin" && password === "valtrix") {
+        window.location.href = "admin.html";
+      } else {
+        document.getElementById("error").classList.remove("hidden");
+      }
+    });
+  </script>
+</body>
+</html>
