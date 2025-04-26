@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Bem vindo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+</head>
+
+<body class="bg-gray-950 text-white flex items-center justify-center min-h-screen">
+ 
+  
+  <div class="bg-gray-800 p-6 rounded-xl shadow-lg w-full max-w-md">
+
+    <h1 class="text-2xl font-bold mb-6 text-center">Vincular Discord + Roblox</h1>
+
+    <form id="form">
+      <label class="block mb-2 font-medium">Seu nome no Discord:</label>
+      <input type="text" id="discord"
+        class="w-full p-2 mb-4 bg-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder="ex: usuário#0001" required>
+
+      <label class="block mb-2 font-medium">Seu nome no Roblox:</label>
+      <input type="text" id="roblox"
+        class="w-full p-2 mb-4 bg-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder="ex: roblox_user" required>
+
+      <button type="submit" class="bg-blue-600 hover:bg-blue-700 w-full py-2 rounded-xl font-semibold">Enviar</button>
+    </form>
+
+    <p id="status" class="mt-4 text-green-400 hidden text-center font-medium">Dados enviados com sucesso!</p>
+  </div>
+  
+  <script>
+    // CONFIGURAÇÃO DO FIREBASE
+    const firebaseConfig = {
+      apiKey: "AIzaSyAT30TITut9HLVXCt1Fk3M_Fnuit3yg3qQ",
+      authDomain: "roblox-tracker-ac571.firebaseapp.com",
+      databaseURL: "https://roblox-tracker-ac571-default-rtdb.firebaseio.com",
+      projectId: "roblox-tracker-ac571",
+      storageBucket: "roblox-tracker-ac571.firebasestorage.app",
+      messagingSenderId: "693592478646",
+      appId: "1:693592478646:web:72ad4570183203b7a6e717",
+      measurementId: "G-QBK5TVBDVG"
+    };
+
+    // 🔄 INICIALIZAÇÃO DO FIREBASE
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // PEGAR PARÂMETRO ?server=XXXX DA URL
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param) || "desconhecido";
+    }
+
+    // ENVIO DO FORMULÁRIO
+    document.getElementById("form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const discord = document.getElementById("discord").value.trim();
+      const roblox = document.getElementById("roblox").value.trim();
+      const server = getQueryParam("server");
+
+      if (!discord || !roblox) {
+        alert("Preencha todos os campos!");
+        return;
+      }
+
+      try {
+        await db.collection("users").add({
+          discord,
+          roblox,
+          server,
+          timestamp: new Date()
+        });
+
+        document.getElementById("status").classList.remove("hidden");
+        document.getElementById("form").reset();
+
+        // Redireciona após 2 segundos
+        setTimeout(() => {
+          window.location.href = "https://www.roblox.com/pt/communities/35692783/Memeverse-Skins#!/store";
+        }, 1000);
+
+      } catch (error) {
+        alert("Erro ao enviar dados: " + error.message);
+      }
+    });
+  </script>
+
+</body>
+</html>
